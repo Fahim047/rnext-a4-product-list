@@ -1,8 +1,17 @@
 import { useState } from 'react';
+import { useProducts } from '../contexts/ProductsProvider';
 import ArrowDown from '../icons/ArrowDown';
 
 const Sort = () => {
 	const [showSort, setShowSort] = useState(false);
+	const { setData } = useProducts();
+	const handleSort = (term) => {
+		setShowSort(false);
+		fetch(`https://fakestoreapi.com/products?sort=${term}`)
+			.then((res) => res.json())
+			.then((json) => setData(json))
+			.catch((error) => console.log(error));
+	};
 	return (
 		<div class="relative inline-block text-left">
 			<div>
@@ -33,17 +42,16 @@ const Sort = () => {
 							class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
 							role="menuitem"
 							tabindex="-1"
-							onclick="toggleDropdown()"
+							onClick={() => handleSort('asc')}
 							id="menu-item-0"
 						>
 							Low to High
 						</span>
 						<span
-							href=""
 							class="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
 							role="menuitem"
 							tabindex="-1"
-							onclick="toggleDropdown()"
+							onClick={() => handleSort('desc')}
 							id="menu-item-0"
 						>
 							High to Low

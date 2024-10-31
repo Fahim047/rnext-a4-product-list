@@ -1,10 +1,15 @@
+import { useEffect, useState } from 'react';
 import ArrowDown from '../icons/ArrowDown';
-import { useState } from 'react';
 const Filter = () => {
 	const [showFilter, setShowFilter] = useState(false);
-	console.log(showFilter);
+	const [categories, setCategories] = useState([]);
+	useEffect(() => {
+		fetch('https://fakestoreapi.com/products/categories')
+			.then((res) => res.json())
+			.then((json) => setCategories(json));
+	}, []);
 	return (
-		<div class="relative inline-block text-left">
+		<div className="relative inline-block text-left">
 			<div>
 				<button
 					type="button"
@@ -29,30 +34,19 @@ const Filter = () => {
 					id="filter-dropdown"
 				>
 					<div className="py-1" role="none">
-						<label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-							<input
-								type="checkbox"
-								className="form-checkbox h-4 w-4"
-								id="filter-option-1"
-							/>
-							<span className="ml-2">Category 1</span>
-						</label>
-						<label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-							<input
-								type="checkbox"
-								className="form-checkbox h-4 w-4"
-								id="filter-option-2"
-							/>
-							<span className="ml-2">Category 2</span>
-						</label>
-						<label className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700">
-							<input
-								type="checkbox"
-								className="form-checkbox h-4 w-4"
-								id="filter-option-3"
-							/>
-							<span className="ml-2">Category 3</span>
-						</label>
+						{categories.map((category) => (
+							<label
+								key={category}
+								className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700"
+							>
+								<input
+									type="checkbox"
+									className="form-checkbox h-4 w-4"
+									id="filter-option-1"
+								/>
+								<span className="ml-2">{category}</span>
+							</label>
+						))}
 					</div>
 				</div>
 			)}
