@@ -3,7 +3,7 @@ import { useProducts } from '../contexts/ProductsProvider';
 import Loader from './Loader';
 import ProductCard from './ProductCard';
 
-const ProductGallery = () => {
+const ProductGallery = ({ cartItems, addToCart, removeFromCart }) => {
 	const { data, setData } = useProducts();
 	if (data.length === 0) {
 		return <Loader />;
@@ -14,7 +14,13 @@ const ProductGallery = () => {
 				<div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
 					{/* <!-- Card --> */}
 					{data.map((product) => (
-						<ProductCard key={product.id} product={product} />
+						<ProductCard
+							key={product.id}
+							product={product}
+							cartItems={cartItems}
+							addToCart={addToCart}
+							removeFromCart={removeFromCart}
+						/>
 					))}
 				</div>
 			</div>

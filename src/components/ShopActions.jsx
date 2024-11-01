@@ -5,7 +5,7 @@ import SearchBox from './SearchBox';
 import ShoppingCart from './ShoppingCart';
 import Sort from './Sort';
 
-const ShopActions = () => {
+const ShopActions = ({ cartItems }) => {
 	const [selectedCategory, setSelectedCategory] = useState('');
 	const [sortOrder, setSortOrder] = useState('');
 	const { setData } = useProducts();
@@ -34,7 +34,7 @@ const ShopActions = () => {
 				{/* <!-- Search and Cart --> */}
 				<div className="flex gap-2 items-center">
 					<SearchBox />
-					<ShoppingCart />
+					<ShoppingCart cartItems={cartItems} />
 				</div>
 			</div>
 		</div>

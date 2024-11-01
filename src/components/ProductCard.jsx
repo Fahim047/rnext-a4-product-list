@@ -1,8 +1,11 @@
 import Cart from '../icons/Cart';
-const ProductCard = ({ product }) => {
-	const { image, title, category, price } = product;
+const ProductCard = ({ product, cartItems, addToCart, removeFromCart }) => {
+	const { id, image, title, category, price } = product;
+	const isProductInCart = cartItems.some(
+		(cartItem) => cartItem.id === product.id
+	);
 	return (
-		<div className="relative flex flex-col ">
+		<div className="relative flex flex-col border p-4 rounded-lg">
 			<div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md lg:aspect-none lg:h-80">
 				<img
 					src={image}
@@ -12,18 +15,27 @@ const ProductCard = ({ product }) => {
 			</div>
 			<div className="mt-4 px-3 pb-4 flex-grow">
 				<div>
-					<h3 className="text-sm text-gray-700">{title}</h3>
-					<p className="mt-1 text-sm text-gray-500">{category}</p>
+					<h3 className="font-bold text-gray-700">{title}</h3>
+					<p className="mt-1 text-sm text-gray-500 capitalize">{category}</p>
 				</div>
-				<p className="text-sm font-medium text-gray-900">${price}</p>
+				<p className="font-medium text-gray-900 mt-1 text-2xl">${price}</p>
 			</div>
 			{/* <!-- Button --> */}
-			<div className="cursor-pointer rounded-md bg-white text-[0.8125rem] font-medium leading-5 text-slate-700 ring-1 ring-slate-700/10  hover:ring-1 hover:ring-slate-700/20 hover:bg-slate-50 hover:text-slate-900 items-center text-center mb-3 mx-3 flex-1">
-				<div className="flex px-3 py-2 justify-center items-center gap-2">
-					<Cart />
-					Add To Cart
-				</div>
-			</div>
+			<button
+				className={`flex items-center justify-center font-medium leading-5 rounded-md text-[0.8125rem] mx-3 px-4 py-2 gap-2 transition-all duration-200 border
+					${
+						isProductInCart
+							? 'border-red-500 bg-red-50 text-red-500 hover:bg-red-100' // Remove from cart style
+							: 'hover:ring-1 hover:ring-slate-700/20 hover:bg-slate-50 hover:text-slate-900' // Add to cart style
+					}
+				`}
+				onClick={() =>
+					isProductInCart ? removeFromCart(id) : addToCart(product)
+				}
+			>
+				<Cart />
+				{isProductInCart ? 'Remove from cart' : 'Add to cart'}
+			</button>
 		</div>
 	);
 };
