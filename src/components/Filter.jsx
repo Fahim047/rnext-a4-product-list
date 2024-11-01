@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ArrowDown from '../icons/ArrowDown';
-const Filter = () => {
+const Filter = ({ selectedCategory, setSelectedCategory }) => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [categories, setCategories] = useState([]);
 	useEffect(() => {
@@ -8,6 +8,11 @@ const Filter = () => {
 			.then((res) => res.json())
 			.then((json) => setCategories(json));
 	}, []);
+	const handleFilter = (category) => {
+		selectedCategory === category
+			? setSelectedCategory('')
+			: setSelectedCategory(category);
+	};
 	return (
 		<div className="relative inline-block text-left">
 			<div>
@@ -40,9 +45,13 @@ const Filter = () => {
 								className="inline-flex w-full cursor-pointer hover:bg-gray-50 items-center px-4 py-2 text-sm text-gray-700"
 							>
 								<input
-									type="checkbox"
+									type="radio"
 									className="form-checkbox h-4 w-4"
 									id="filter-option-1"
+									name="products-category"
+									value={category}
+									checked={selectedCategory === category}
+									onClick={() => handleFilter(category)}
 								/>
 								<span className="ml-2">{category}</span>
 							</label>
