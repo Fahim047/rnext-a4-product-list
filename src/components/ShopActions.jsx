@@ -8,7 +8,14 @@ import Sort from './Sort';
 const ShopActions = ({ cartItems }) => {
 	const [selectedCategory, setSelectedCategory] = useState('');
 	const [sortOrder, setSortOrder] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 	const { setData } = useProducts();
+	const handleFilteredData = (products) => {
+		const filteredData = products.filter((product) =>
+			product.title.toLowerCase().includes(searchTerm.toLowerCase())
+		);
+		setData(filteredData);
+	};
 	useEffect(() => {
 		let url = 'https://fakestoreapi.com/products';
 		if (selectedCategory) url += `/category/${selectedCategory}`;
@@ -16,9 +23,9 @@ const ShopActions = ({ cartItems }) => {
 
 		fetch(url)
 			.then((res) => res.json())
-			.then((json) => setData(json))
+			.then((json) => handleFilteredData(json))
 			.catch((error) => console.log(error));
-	}, [selectedCategory, sortOrder]);
+	}, [selectedCategory, sortOrder, searchTerm]);
 	return (
 		<div className="mt-10">
 			<div className="flex justify-between relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
@@ -33,7 +40,7 @@ const ShopActions = ({ cartItems }) => {
 
 				{/* <!-- Search and Cart --> */}
 				<div className="flex gap-2 items-center">
-					<SearchBox />
+					<SearchBox setSearchTerm={setSearchTerm} />
 					<ShoppingCart cartItems={cartItems} />
 				</div>
 			</div>

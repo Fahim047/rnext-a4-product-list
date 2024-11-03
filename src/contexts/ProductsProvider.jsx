@@ -4,7 +4,6 @@ const ProductsContext = createContext();
 
 const ProductsProvider = ({ children }) => {
 	const [data, setData] = useState([]);
-	const [sortOption, setSortOption] = useState('');
 	useEffect(() => {
 		fetch('https://fakestoreapi.com/products')
 			.then((res) => res.json())
