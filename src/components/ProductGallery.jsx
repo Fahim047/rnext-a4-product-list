@@ -4,9 +4,16 @@ import Loader from './Loader';
 import ProductCard from './ProductCard';
 
 const ProductGallery = ({ cartItems, addToCart, removeFromCart }) => {
-	const { data, setData } = useProducts();
-	if (data.length === 0) {
+	const { data, setData, loading } = useProducts();
+	if (loading) {
 		return <Loader />;
+	}
+	if (data.length === 0) {
+		return (
+			<div className="w-full min-h-[200px] flex items-center justify-center">
+				<h2 className="text-3xl text-gray-500">🔍 No Products found!!!</h2>
+			</div>
+		);
 	}
 	return (
 		<div className="bg-white">

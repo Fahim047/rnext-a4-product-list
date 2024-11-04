@@ -9,7 +9,7 @@ const ShopActions = ({ cartItems }) => {
 	const [selectedCategory, setSelectedCategory] = useState('');
 	const [sortOrder, setSortOrder] = useState('');
 	const [searchTerm, setSearchTerm] = useState('');
-	const { setData } = useProducts();
+	const { setData, setLoading } = useProducts();
 	const handleFilteredData = (products) => {
 		const filteredData = products.filter((product) =>
 			product.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -17,14 +17,21 @@ const ShopActions = ({ cartItems }) => {
 		setData(filteredData);
 	};
 	useEffect(() => {
+		setLoading(true);
 		let url = 'https://fakestoreapi.com/products';
 		if (selectedCategory) url += `/category/${selectedCategory}`;
 		if (sortOrder) url += `?sort=${sortOrder}`;
 
 		fetch(url)
 			.then((res) => res.json())
-			.then((json) => handleFilteredData(json))
-			.catch((error) => console.log(error));
+			.then((json) => {
+				handleFilteredData(json);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.log(error);
+				setLoading(false);
+			});
 	}, [selectedCategory, sortOrder, searchTerm]);
 	return (
 		<div className="mt-10">

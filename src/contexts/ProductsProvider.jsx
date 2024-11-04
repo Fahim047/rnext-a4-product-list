@@ -4,14 +4,22 @@ const ProductsContext = createContext();
 
 const ProductsProvider = ({ children }) => {
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(false);
 	useEffect(() => {
+		setLoading(true);
 		fetch('https://fakestoreapi.com/products')
 			.then((res) => res.json())
-			.then((json) => setData(json))
-			.catch((error) => console.log(error));
+			.then((json) => {
+				setData(json);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.log(error);
+				setLoading(false);
+			});
 	}, []);
 	return (
-		<ProductsContext.Provider value={{ data, setData }}>
+		<ProductsContext.Provider value={{ data, setData, loading, setLoading }}>
 			{children}
 		</ProductsContext.Provider>
 	);
